@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from '../layouts/app/index.js'
+import '@/components/index.js'
 
 export default function render (options) {
   if (options.store && options.router) {

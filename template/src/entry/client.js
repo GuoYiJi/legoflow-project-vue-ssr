@@ -1,5 +1,6 @@
 import Vue from 'vue'
 
+import '@/components/index.js'
 import App from '../layouts/app/index.js'
 import basic from '@/basic'
 
