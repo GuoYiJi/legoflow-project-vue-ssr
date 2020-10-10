@@ -4,9 +4,10 @@ const ROOT = path.join(__dirname, '..')
 
 module.exports = function (webpackConfig) {
   const mode = process.env.mode
+  const publicPath = process.env.NODE_PUBLIC || '/'
 
   webpackConfig.output
-    .publicPath(process.env.NODE_PUBLIC || '/')
+    .publicPath(publicPath)
     .end()
   // webpackConfig
   //   .plugin('copyplugin')
@@ -51,4 +52,16 @@ module.exports = function (webpackConfig) {
   webpackConfig
     .plugins
     .delete('html-webpack-plugin')
+
+
+  // set NODE_PUBLIC
+  webpackConfig
+    .plugin('define-webpack-plugin-public')
+    .use(
+      /* eslint-disable-next-line @typescript-eslint/no-var-requires */
+      require('webpack').DefinePlugin, [{
+        'process.env.NODE_PUBLIC': `'${publicPath}'`
+      }]
+    )
+
 }

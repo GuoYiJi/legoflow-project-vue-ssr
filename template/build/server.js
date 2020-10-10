@@ -113,6 +113,17 @@ module.exports = webpackConfig => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     .use(require('vue-loader/lib/plugin'))
 
+
+  // set VUE_ENV=server
+  webpackConfig
+    .plugin('define-webpack-plugin-env')
+    .use(
+      /* eslint-disable-next-line @typescript-eslint/no-var-requires */
+      require('webpack').DefinePlugin, [{
+        'process.env.VUE_ENV': '"server"'
+      }]
+    )
+
   webpackConfig
     .plugin('manifest-plugin')
     .use(require('webpack-manifest-plugin'))

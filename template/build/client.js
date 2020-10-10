@@ -20,11 +20,7 @@ module.exports = webpackConfig => {
     .delete('main')
     .clear()
     .end()
-    .entry('main')
-    .add('./src/main.ts')
-    .end()
 
-  const template = fs.readFileSync(path.join(ROOT, './public/index.html'), 'utf-8')
 
   Object.keys(entries).forEach(entrie => {
     // console.log('entrie', entrie)
@@ -198,6 +194,17 @@ module.exports = webpackConfig => {
     .plugin('vue-loader')
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     .use(require('vue-loader/lib/plugin'))
+
+  // set VUE_ENV=client
+  webpackConfig
+    .plugin('define-webpack-plugin-env')
+    .use(
+      /* eslint-disable-next-line @typescript-eslint/no-var-requires */
+      require('webpack').DefinePlugin, [{
+        'process.env.VUE_ENV': '"client"'
+      }]
+    )
+
 
   webpackConfig.module.rules.delete('html')
 }

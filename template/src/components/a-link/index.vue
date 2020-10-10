@@ -9,21 +9,33 @@ export default {
       default: ''
     },
     href: {
-      type: String|Object,
+      type: [String, Object],
       default: ''
     },
-    _route: ''
+  },
+  data () {
+    return {
+      _route: ''
+    }
   },
   watch: {
-    herf: {
+    href: {
       immediate: true,
       handler (val) {
 
         let newHerf = val
+
+        let routerBase;
+
+        if (process.env.VUE_ENV === 'client') {
+          routerBase = window.routerBase
+        } else {
+          routerBase = process.env.NODE_PUBLIC
+        }
+
         // 这种二级目录部署的情况补上目录
-        if (window.routerBase && window.routerBase !== '/' && this.href.indexOf('/') === 0) {
-          e.preventDefault()
-          newHerf = `/${window.routerBase.replace(/\//g, '')}${newHerf}`
+        if (routerBase && routerBase !== '/' && this.href.indexOf('/') === 0) {
+          newHerf = `/${routerBase.replace(/\//g, '')}${newHerf}`
         }
 
         this._route = newHerf
@@ -32,12 +44,6 @@ export default {
   },
   methods: {
     onClick (e) {
-      // 这种二级目录部署的情况补上目录
-      // if (window.routerBase && window.routerBase !== '/' && this.href.indexOf('/') === 0) {
-      //   e.preventDefault()
-      //   window.location.href = `/${window.routerBase.replace(/\//g, '')}${this.href}`
-      // }
-
       this.$emit('click', e)
     }
   }
